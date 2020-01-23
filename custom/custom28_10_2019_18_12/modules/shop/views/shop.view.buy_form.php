@@ -212,5 +212,7 @@ echo '</form>';
 if(! empty($result["result"]["one_click"]))
 {
 	$result["result"]["one_click"]["good_id"] = $result["row"]["id"];
+    $result["result"]["one_click"]["required"] = '';
+    if($result["result"]["ids_param"][4]["value"] == "yes") $result["result"]["one_click"]["required"] = 16;
 	echo $this->get('one_click', 'cart', $result["result"]["one_click"]);
 }

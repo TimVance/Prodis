@@ -43,8 +43,11 @@ if (! empty($result["rows_param"]))
 
 	foreach ($result["rows_param"] as $row)
 	{
-	    //if($row["id"] == 16) continue;
+	    // Для сканов паспортов убираем обязательные поля
+	    if($row["id"] == 16) $row["required"] = '';
+
         echo '<div class="form-group form-group'.$row["id"]
+            .(!empty($row["required"] || $row["id"] == $result["required"]) ? ' required' : '')
             .(in_array($row["id"], $vvoz_hide) ? ' vvoz-hide' : '')
             .(in_array($row["id"], $agree_hide) ? ' agree-hide' : '')
             .(in_array($row["id"], $peremesh) ? ' peremesh' : '')
@@ -142,7 +145,7 @@ if (! empty($result["rows_param"]))
 				break;
 
 			case "attachments":
-				echo '<div class="infofield">'.$row["name"].($row["required"] ? '<span style="color:red;">*</span>' : '').':</div>';
+				echo '<div class="infofield">'.$row["name"].($row["required"] || $row["id"] == $result["required"] ? '<span style="color:red;">*</span>' : '').':</div>';
 				echo '<label class="dropzone inpattachment">
                         <input multiple type="file" name="attachments'.$row["id"].'[]" class="inpfiles" max="'.$row["max_count_attachments"].'">
                         <div class="drop-information">

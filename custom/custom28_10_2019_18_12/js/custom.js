@@ -121,11 +121,44 @@ $(function() {
         $(".order_form_param27 .gabarity:last-child .add-fields").remove();
     });
 
+    $(document).on("change", ".form-control", function () {
+        if ($(this).val() != '') {
+            $(this).parent().parent().find('.errors').hide();
+        }
+    });
+
 });
 
-diafan_ajax.before['cart_one_click'] = function (form) {
-
-    console.log(form);
-
+function showError(form, field) {
+    // Снимаю блокировку кнопки
+    form.querySelector('.btn').removeAttribute('disabled');
+    // Вывожу ошибку
+    var error = field.querySelector('.errors');
+    error.textContent = 'Заполните обязательное поле!';
+    error.style.color = 'red';
+    error.style.display = 'inline-block';
+    // Останавливаю отправки формы
     return false;
+}
+
+diafan_ajax.before['cart_one_click'] = function (form) {
+    // Поиск обязательных полей
+    fields = form.querySelectorAll(".form-group.required");
+    for (var i = 0; fields.length > i; i++) {
+        // Если поле видимое
+        if(fields[i].style.display !== 'none') {
+            var input = fields[i].querySelector('.form-control');
+            // Для полей
+            if (input) {
+                if(input.value == '') {
+                    input.focus();
+                    return showError(form, fields[i]);
+                }
+            }
+            else { // Для файлов
+                var attachment = fields[i].querySelector('.inpfiles');
+                if(attachment.value == '') return showError(form, fields[i]);
+            }
+        }
+    }
 };
