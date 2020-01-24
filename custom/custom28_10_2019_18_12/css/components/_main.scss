@@ -322,6 +322,7 @@ main.right-side {
         * {
             opacity: .7;
             cursor: not-allowed;
+            pointer-events: none;
         }
 
     }

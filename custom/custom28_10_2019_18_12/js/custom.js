@@ -91,6 +91,7 @@ $(function() {
     date_from.datepicker('setDate', "today");
     date_to.datepicker('setDate', "today");
     date_from.change(function () {
+        console.log('test');
         var selected = $(this).val().split(".");
         var next = new Date(selected[2], selected[1] - 1, selected[0]);
         next.setDate(next.getDate() + 1);
@@ -98,7 +99,7 @@ $(function() {
     });
 
     // Блокировка даты после
-    date_to.attr("disabled", "disabled");
+    //date_to.attr("disabled", "disabled");
 
     // Загрузка файлов
     $(".inpfiles").change(function (event) {
@@ -121,6 +122,7 @@ $(function() {
         $(".order_form_param27 .gabarity:last-child .add-fields").remove();
     });
 
+    // Убираем ошибки, если поле не пустое
     $(document).on("change", ".form-control", function () {
         if ($(this).val() != '') {
             $(this).parent().parent().find('.errors').hide();
