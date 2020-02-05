@@ -8,12 +8,14 @@ $(function() {
                 form.removeClass("tracker-no-select");
                 form.find('.vvoz-hide').slideDown();
                 form.find('.agree-hide').slideUp();
+                form.find('.form-group30').slideUp();
                 break;
             case "9":
                 form.removeClass("tracker-no-select");
                 form.find(".form-group2 select :first").prop("selected", true);
                 form.find('.vvoz-hide').slideUp();
                 form.find('.agree-hide').slideDown();
+                form.find('.form-group30').slideDown();
                 break;
             default:
                 form.addClass("tracker-no-select");
@@ -91,7 +93,6 @@ $(function() {
     date_from.datepicker('setDate', "today");
     date_to.datepicker('setDate', "today");
     date_from.change(function () {
-        console.log('test');
         var selected = $(this).val().split(".");
         var next = new Date(selected[2], selected[1] - 1, selected[0]);
         next.setDate(next.getDate() + 1);

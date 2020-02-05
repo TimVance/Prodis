@@ -54,6 +54,7 @@ $track_sort     = '?order=track&amp;sort=asc';
 $date_from_sort = '?order=date_from&amp;sort=asc';
 $date_to_sort   = '?order=date_to&amp;sort=asc';
 $status_sort    = '?order=status&amp;sort=asc';
+$user_sort    = '?order=user&amp;sort=asc';
 $comment_sort   = '?order=comment&amp;sort=asc';
 
 switch ($get_order) {
@@ -77,6 +78,10 @@ switch ($get_order) {
         $order = 'o.status';
         if ($get_sort == "asc") $status_sort = '?order=status&amp;sort=desc';
         break;
+    case "user":
+        $order = 'o.user_id';
+        if ($get_sort == "asc") $user_sort = '?order=user&amp;sort=desc';
+        break;
     case "comment":
         $order = 'comment';
         if ($get_sort == "asc") $comment_sort = '?order=comment&amp;sort=desc';
@@ -88,7 +93,7 @@ switch ($get_order) {
 }
 
 $orders = DB::query_fetch_key("
-                        SELECT o.id, s.[name], s.color, g.good_id AS good,
+                        SELECT o.id, o.user_id, s.[name], s.color, g.good_id AS good,
                         shop.[name] AS gname,
                         (SELECT value FROM {shop_order_param_element} WHERE element_id=o.id AND param_id='5') AS date_from,
                         (SELECT value FROM {shop_order_param_element} WHERE element_id=o.id AND param_id='17') AS date_to,
@@ -100,8 +105,8 @@ $orders = DB::query_fetch_key("
                         LEFT JOIN {shop_order_status} AS s ON o.status_id=s.id
                         INNER JOIN {shop_order_goods} AS g ON o.id=g.order_id
                         RIGHT JOIN {shop} AS shop ON g.good_id=shop.id
-                        WHERE o.trash='0' AND shop.trash='0' AND o.user_id='%d'
-                        ORDER BY " . $order . $sort, $this->diafan->_users->id, 'id');
+                        WHERE o.trash='0' AND shop.trash='0' ".($this->diafan->_users->admin ? '' : "AND o.user_id='$this->diafan->_users->id'")."
+                        ORDER BY " . $order . $sort, 'id');
 
 echo '<div class="table-scroll">';
 echo '<div class="table">';
@@ -112,13 +117,16 @@ echo '<span class="type' . ($get_order == "track" ? ' ' . $get_sort : "") . '">�
 echo '<span class="date' . ($get_order == "date_from" ? ' ' . $get_sort : "") . '">Дата от<a href="' . BASE_PATH . $date_from_sort . '"></a></span>';
 echo '<span class="date' . ($get_order == "date_to" ? ' ' . $get_sort : "") . '">Дата до<a href="' . BASE_PATH . $date_to_sort . '"></a></span>';
 echo '<span class="status' . ($get_order == "status" ? ' ' . $get_sort : "") . '">Статус<a href="' . BASE_PATH . $status_sort . '"></a></span>';
-echo '<span class="comment' . ($get_order == "comment" ? ' ' . $get_sort : "") . '">Комментарий<a href="' . BASE_PATH . $comment_sort . '"></a></span>';
+echo '<span class="user' . ($get_order == "user" ? ' ' . $get_sort : "") . '">Имя<a href="' . BASE_PATH . $status_sort . '"></a></span>';
+echo '<span class="actions' . ($get_order == "comment" ? ' ' . $get_sort : "") . '">Комментарий<a href="' . BASE_PATH . $comment_sort . '"></a></span>';
+echo '<span>Действия</span>';
 echo '</div>';
 if (empty($orders)) echo '<div class="no-orders">Заявок пока не создано!</div>';
 else foreach ($orders as $k => $order) {
     $params = DB::query_fetch_key("
                                     SELECT value, param_id FROM {shop_order_param_element} WHERE element_id='%d' AND trash='0'
                                 ", $order["id"], "param_id");
+    $user_name = DB::query_fetch_all("SELECT fio FROM {users} WHERE id='%d'", $order["user_id"]);
     $type   = 'Заявка на ввоз/вывоз';
     if ($params[19]["value"] == 9) $type = 'Разрешение на проведение работ';
 
@@ -131,7 +139,11 @@ else foreach ($orders as $k => $order) {
     echo '<span class="date">' . (!empty($params[5]["value"]) ? 'c ' . $this->diafan->formate_from_date($params[5]["value"]) : "") . '</span>';
     echo '<span class="date">' . (!empty($params[17]["value"]) ? 'по ' . $this->diafan->formate_from_date($params[17]["value"]) : "") . '</span>';
     echo '<span class="status">' . (!empty($order["name"]) ? $order["name"] : "") . '</span>';
+    echo '<span class="user">' . (!empty($user_name[0]["fio"]) ? '<a href="https://vend.dlay.ru/admin/users/edit'.$order["user_id"].'/">'.$user_name[0]["fio"].'</a>' : "") . '</span>';
     echo '<span class="comment">' . (!empty($params[24]["value"]) ? $params[24]["value"] : "") . '</span>';
+    echo '<span class="actions">';
+    echo '<a href="#"><i class="fas fa-download"></i></a>';
+    echo '</span>';
     echo '</div>';
 }
 echo '</div>';
