@@ -30,10 +30,8 @@ if(! defined("DIAFAN"))
 <insert name="show_include" file="footer">
 
 
-    <insert name="show_js">
     <script type="text/javascript" asyncsrc="<insert name="custom" path="js/main.js" absolute="true" compress="js">" charset="UTF-8"></script>
-    <script type="text/javascript" asyncsrc="<insert name="custom" path="js/animation.js" absolute="true" compress="js">" charset="UTF-8"></script>
-    <script type="text/javascript" asyncsrc="<insert name="custom" path="js/custom.js" absolute="true" compress="js">" charset="UTF-8"></script>
+    <insert name="show_js"></insert>
 
     <!--<insert name="show_privacy" hash="false" text="">-->
     <insert name="show_include" file="counters">

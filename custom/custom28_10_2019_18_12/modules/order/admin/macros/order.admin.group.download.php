@@ -52,26 +52,43 @@ class Order_admin_group_download extends Diafan
         $ids = $this->diafan->filter($_POST["ids"], "integer");
 
         if (count($ids) == 1) {
-            $file   = $this->getFile($ids[0]);
+            $files  = $this->getFile($ids[0]);
             $params = $this->getOrderParamElement($ids[0]);
-            //print_r($params);
-            //exit();
             require $_SERVER["DOCUMENT_ROOT"] . '/custom/custom28_10_2019_18_12/plugins/vendor/autoload.php';
-
             $phpWord = new PhpOffice\PhpWord\PhpWord();
-            $doc     = new PhpOffice\PhpWord\TemplateProcessor('https://' . $_SERVER['HTTP_HOST'] . '/attachments/get/' . $file["id"] . '/' . $file["name"]);
+            $doc     = new PhpOffice\PhpWord\TemplateProcessor('https://' . $_SERVER['HTTP_HOST'] . '/attachments/get/' . $files["id"] . '/' . $files["name"]);
 
             $arValues = array(
-                'boss_name'  => $params[13]["value"],
-                'boss_phone' => $params[25]["value"],
-                'date'       => $params[17]["value"],
+                'boss_name'  => (!empty($params[13]["value"]) ? $params[13]["value"] : ''),
+                'boss_phone' => (!empty($params[25]["value"]) ? $params[25]["value"] : ''),
+                'date'       => date("d-m-y", strtotime($params[5]["value"])) . ' - ' . date("d-m-y", strtotime($params[17]["value"])),
+                'work'       => (!empty($params[19]["value"] == 9) ? 'Разрешение на проведение работ' : 'Заявка на ввоз/вывоз'),
+                'extra'      => (!empty($params[24]["value"]) ? $params[24]["value"] : ''),
             );
             $doc->setValues($arValues);
 
+            $names = [];
+            if (!empty($params[28]["value"])) {
+                $names = explode("<br />", $params[28]["value"]);
+            }
+            $passports = [];
+            if (!empty($params[31]["value"])) {
+                $passports = explode("<br />", $params[31]["value"]);
+            }
+            $values = [];
+            if (count($names) > 0) {
+                for ($i = 0; $i < count($names); $i++) {
+                    $values[] = ['staff_number' => $i + 1, 'staff_fio' => $names[$i], 'staff_passport' => $passports[$i]];
+                }
+            }
+            $doc->cloneRowAndSetValues('staff_number', $values);
+
             $doc->saveAs($_SERVER["DOCUMENT_ROOT"] . '/test3.docx');
+            $this->downloadFile($_SERVER["DOCUMENT_ROOT"] . '/test3.docx');
         }
     }
 
+    // Получение файла
     private function getFile($id)
     {
         return DB::query_fetch_array("
@@ -82,8 +99,21 @@ class Order_admin_group_download extends Diafan
             ", $id, 5);
     }
 
+    // Получение параметров
     private function getOrderParamElement($id)
     {
         return DB::query_fetch_key("SELECT * FROM {shop_order_param_element} WHERE element_id='%d' AND trash='0'", $id, "param_id");
+    }
+
+    // Загрузка файла
+    private function downloadFile($file)
+    {
+        header('Content-Description: File Transfer');
+        header('Content-Type: application/octet-stream');
+        header('Content-Disposition: attachment; filename=' . basename($file));
+        header('Content-Transfer-Encoding: binary');
+        header('Content-Length: ' . filesize($file));
+        readfile($file);
+        exit();
     }
 }
