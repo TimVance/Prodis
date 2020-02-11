@@ -119,7 +119,6 @@ echo '<span class="date' . ($get_order == "date_to" ? ' ' . $get_sort : "") . '"
 echo '<span class="status' . ($get_order == "status" ? ' ' . $get_sort : "") . '">Статус<a href="' . BASE_PATH . $status_sort . '"></a></span>';
 echo '<span class="user' . ($get_order == "user" ? ' ' . $get_sort : "") . '">Имя<a href="' . BASE_PATH . $status_sort . '"></a></span>';
 echo '<span class="actions' . ($get_order == "comment" ? ' ' . $get_sort : "") . '">Комментарий<a href="' . BASE_PATH . $comment_sort . '"></a></span>';
-echo '<span>Действия</span>';
 echo '</div>';
 if (empty($orders)) echo '<div class="no-orders">Заявок пока не создано!</div>';
 else foreach ($orders as $k => $order) {
@@ -141,9 +140,6 @@ else foreach ($orders as $k => $order) {
     echo '<span class="status">' . (!empty($order["name"]) ? $order["name"] : "") . '</span>';
     echo '<span class="user">' . (!empty($user_name[0]["fio"]) ? '<a href="https://vend.dlay.ru/admin/users/edit'.$order["user_id"].'/">'.$user_name[0]["fio"].'</a>' : "") . '</span>';
     echo '<span class="comment">' . (!empty($params[24]["value"]) ? $params[24]["value"] : "") . '</span>';
-    echo '<span class="actions">';
-    echo '<a href="#"><i class="fas fa-download"></i></a>';
-    echo '</span>';
     echo '</div>';
 }
 echo '</div>';

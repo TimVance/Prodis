@@ -43,7 +43,7 @@ class Order_admin extends Frame_admin
 		'main' => array (
 			'number' => array(
 				'type' => 'function',
-				'name' => 'Заказ №',
+				'name' => 'Заявка №',
 				'help' => 'Номер заказа.',
 				'no_save' => true,
 			),
@@ -102,7 +102,7 @@ class Order_admin extends Frame_admin
 			'hr2' => 'hr',
 			'user_id' => array(
 				'type' => 'function',
-				'name' => 'Покупатель',
+				'name' => 'Заказчик',
 			),
 			'user_buy' => array(
 				'type' => 'function',
