@@ -61,7 +61,7 @@ class Order_admin_group_download extends Diafan
             $arValues = array(
                 'boss_name'  => (!empty($params[13]["value"]) ? $params[13]["value"] : ''),
                 'boss_phone' => (!empty($params[25]["value"]) ? $params[25]["value"] : ''),
-                'date'       => date("d-m-y", strtotime($params[5]["value"])) . ' - ' . date("d-m-y", strtotime($params[17]["value"])),
+                'date'       => date("d.m.y", strtotime($params[5]["value"])) . ' - ' . date("d.m.y", strtotime($params[17]["value"])),
                 'work'       => (!empty($params[19]["value"] == 9) ? 'Разрешение на проведение работ' : 'Заявка на ввоз/вывоз'),
                 'extra'      => (!empty($params[24]["value"]) ? $params[24]["value"] : ''),
             );
