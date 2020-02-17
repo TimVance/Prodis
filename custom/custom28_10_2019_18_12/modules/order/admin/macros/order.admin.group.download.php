@@ -86,6 +86,27 @@ class Order_admin_group_download extends Diafan
             $doc->saveAs($_SERVER["DOCUMENT_ROOT"] . '/test3.docx');
             $this->downloadFile($_SERVER["DOCUMENT_ROOT"] . '/test3.docx');
         }
+        else {
+            //город тц трекер
+            $orders = $this->getOrdersInfo($ids);
+
+            // Проверка на одинаковый товары и трекер
+            $good_id = 0;
+            $k = 0;
+            foreach($orders as $i => $order) {
+                if ($k == 0) $good_id = $order["id"];
+                else {
+                    if ($good_id == $order["id"]) continue;
+                    else {
+                        echo 'Товары разные';
+                        exit();
+                    }
+                }
+                $k++;
+            }
+            echo 'Начинаю объединение';
+            exit();
+        }
     }
 
     // Получение файла
@@ -115,5 +136,17 @@ class Order_admin_group_download extends Diafan
         header('Content-Length: ' . filesize($file));
         readfile($file);
         exit();
+    }
+
+    // Получение заказов
+    private function getOrdersInfo($ids) {
+        return DB::query_fetch_key("
+                SELECT orders.id AS order_id, goods.good_id AS id
+                FROM {shop_order} AS orders
+                RIGHT JOIN {shop_order_goods} AS goods ON orders.id=goods.order_id
+                WHERE orders.id IN (".implode(",", $ids).") 
+                AND orders.trash='0' AND goods.trash='0'
+                 ",
+            "order_id");
     }
 }
