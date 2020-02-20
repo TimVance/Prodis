@@ -93,8 +93,12 @@ class Order_admin_group_download extends Diafan
             // Проверка на одинаковый товары и трекер
             $good_id = 0;
             $k = 0;
+            $order_id = 0;
             foreach($orders as $i => $order) {
-                if ($k == 0) $good_id = $order["id"];
+                if ($k == 0) {
+                    $good_id = $order["id"];
+                    $order_id = $i;
+                }
                 else {
                     if ($good_id == $order["id"]) continue;
                     else {
@@ -104,8 +108,63 @@ class Order_admin_group_download extends Diafan
                 }
                 $k++;
             }
-            echo 'Начинаю объединение';
-            exit();
+
+            // Формируем файл
+            if (!empty($order_id)) {
+                $files = $this->getFile($order_id);
+                $params = $this->getOrdersParamElement($ids);
+
+                require $_SERVER["DOCUMENT_ROOT"] . '/custom/custom28_10_2019_18_12/plugins/vendor/autoload.php';
+                $phpWord = new PhpOffice\PhpWord\PhpWord();
+                $doc     = new PhpOffice\PhpWord\TemplateProcessor('https://' . $_SERVER['HTTP_HOST'] . '/attachments/get/' . $files["id"] . '/' . $files["name"]);
+
+                $names = [];
+                $passports = [];
+                $j = 0;
+                $first_id = '';
+                foreach ($ids as $id) {
+                    if (!empty($params[$id][28]["value"])) {
+                        $names_array = [];
+                        $passports_array = [];
+                        $names_array = explode("<br />", $params[$id][28]["value"]);
+                        $passports_array = explode("<br />", $params[$id][31]["value"]);
+                        $names[] = $names_array[0];
+                        $names[] = $names_array[1];
+                        $passports[] = $passports_array[0];
+                        $passports[] = $passports_array[1];
+                        unset($names_array);
+                        unset($passports_array);
+                        $j++;
+                    }
+                }
+                $values = [];
+                $staff_fio = [];
+                if (count($names) > 0) {
+                    for ($i = 0; $i < count($names); $i++) {
+                        if (!in_array($names[$i], $staff_fio)) {
+                            $staff_fio[] = $names[$i];
+                            $values[] = ['staff_number' => $i + 1, 'staff_fio' => $names[$i], 'staff_passport' => $passports[$i]];
+                        }
+                    }
+                }
+                $doc->cloneRowAndSetValues('staff_number', $values);
+
+                foreach ($params as $param) {
+                    $arValues = array(
+                        'boss_name'  => (!empty($param[13]["value"]) ? $param[13]["value"] : ''),
+                        'boss_phone' => (!empty($param[25]["value"]) ? $param[25]["value"] : ''),
+                        'date'       => date("d.m.y", strtotime($param[5]["value"])) . ' - ' . date("d.m.y", strtotime($param[17]["value"])),
+                        'work'       => (!empty($param[19]["value"] == 9) ? 'Разрешение на проведение работ' : 'Заявка на ввоз/вывоз'),
+                        'extra'      => (!empty($param[24]["value"]) ? $param[24]["value"] : ''),
+                    );
+                    break;
+                }
+                $doc->setValues($arValues);
+
+
+                $doc->saveAs($_SERVER["DOCUMENT_ROOT"] . '/test3.docx');
+                $this->downloadFile($_SERVER["DOCUMENT_ROOT"] . '/test3.docx');
+            }
         }
     }
 
@@ -118,6 +177,15 @@ class Order_admin_group_download extends Diafan
                 RIGHT JOIN {attachments} AS file ON goods.good_id=file.element_id
                 WHERE orders.id='%d' AND file.param_id='%d'
             ", $id, 5);
+    }
+
+    // Получение параметров списка товаров
+    private function getOrdersParamElement($ids) {
+        $params = [];
+        foreach ($ids as $id) {
+            $params[$id] = $this->getOrderParamElement($id);
+        }
+        return $params;
     }
 
     // Получение параметров
