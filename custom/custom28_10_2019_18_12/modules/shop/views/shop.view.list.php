@@ -21,15 +21,97 @@ if (! defined('DIAFAN'))
 	include $path.'/includes/404.php';
 }
 
+if(! empty($result["error"]))
+{
+	echo '<p>'.$result["error"].'</p>';
+	return;
+}
 
-$address = DB::query_fetch_array("
-                    SELECT rewrite FROM {rewrite} AS r
-                    LEFT JOIN {shop} AS s ON s.id=r.element_id
-                    WHERE r.module_name='shop'
-                    AND r.element_type='element'
-                    AND r.trash='0'
-                    AND s.cat_id='%d'
-                    ORDER BY r.id
-                    ", $result["id"]);
+if(empty($result["ajax"]))
+{
+	echo '<div class="js_shop_list shop_list">';
+}
 
-if (!empty($address["rewrite"])) $this->diafan->redirect($address["rewrite"]);
+//вывод подкатегории
+if(! empty($result["children"]))
+{
+	foreach($result["children"] as $child)
+	{
+		echo '<div class="shop_cat_link">';
+
+		//вывод изображений подкатегории
+		if(! empty($child["img"]))
+		{
+			echo '<div class="shop_cat_img">';
+			foreach($child["img"] as $img)
+			{
+				switch ($img["type"])
+				{
+					case 'animation':
+						echo '<a href="'.BASE_PATH.$img["link"].'" data-fancybox="gallery'.$child["id"].'shop">';
+						break;
+					case 'large_image':
+						echo '<a href="'.BASE_PATH.$img["link"].'" rel="large_image" width="'.$img["link_width"].'" height="'.$img["link_height"].'">';
+						break;
+					default:
+						echo '<a href="'.BASE_PATH_HREF.$img["link"].'">';
+						break;
+				}
+				echo '<img src="'.$img["src"].'" width="'.$img["width"].'" height="'.$img["height"].'" alt="'.$img["alt"].'" title="'.$img["title"].'">'
+				. '</a> ';
+			}
+			echo '</div>';
+		}
+
+		//название и ссылка подкатегории
+		echo '<a href="'.BASE_PATH_HREF.$child["link"].'">'.$child["name"].' ('.$child["count"].')</a>';		
+
+		//краткое описание подкатегории
+		if($child["anons"])
+		{
+			echo '<div class="shop_cat_anons">'.$child['anons'].'</div>';
+		}
+		echo '</div>';
+
+		//вывод списка товаров подкатегории
+		if(! empty($child["rows"]))
+		{
+			$res = $result; unset($res["show_more"]);
+			$res["rows"] = $child["rows"];
+                        echo '<div class="shop-pane">';
+			echo $this->get($result["view_rows"], 'shop', $res);
+                        echo '</div>';
+		}
+	}
+}
+
+//вывод списка товаров
+if(! empty($result["rows"]))
+{
+
+	echo '<div class="shop-pane">';
+	echo $this->get($result["view_rows"], 'shop', $result);
+	echo '</div>';
+}
+
+//постраничная навигация
+if(! empty($result["paginator"]))
+{
+	echo $result["paginator"];
+}
+
+if (!empty($result["rows"]) && empty($result["hide_compare"]))
+{
+	echo $this->get('compared_goods_list', 'shop', array("site_id" => $this->diafan->_site->id, "shop_link" => $result['shop_link']));
+}
+
+//вывод комментариев ко всей категории товаров (комментарии к конкретному товару в функции id())
+if(! empty($result["comments"]))
+{
+	echo $result["comments"];
+}
+
+if(empty($result["ajax"]))
+{
+	echo '</div>';
+}
