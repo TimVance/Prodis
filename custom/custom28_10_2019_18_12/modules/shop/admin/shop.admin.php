@@ -313,28 +313,6 @@ class Shop_admin extends Frame_admin
 		'separator' => array(
 			'class_th' => 'item__th_seporator',
 		),
-		'price' => array(
-			'class_th' => 'item__th_price no_important',
-			'name' => 'Цены<span class="right">Кол-во</span>',
-			'fast_edit' => true,
-			'no_important' => true,
-		),
-		'count' => array(
-			'type' => 'none',
-			'fast_edit' => true,
-		),
-		'action' => array(
-			'sql' => true,
-			'no_important' => true,
-		),
-		'hit' => array(
-			'sql' => true,
-			'type' => 'none',
-		),
-		'new' => array(
-			'sql' => true,
-			'type' => 'none',
-		),
 		'text' => array(
 			'sql' => true,
 			'type' => 'none',
@@ -415,7 +393,7 @@ class Shop_admin extends Frame_admin
 		}
 		if (! $this->diafan->configmodules("use_count_goods", "shop", $this->diafan->_route->site))
 		{
-			$this->diafan->variable_list("price", "name", "Цены");
+			//$this->diafan->variable_list("price", "name", "Цены2");
 		}
 	}
 
@@ -425,7 +403,7 @@ class Shop_admin extends Frame_admin
 	 */
 	public function show_add()
 	{
-		$this->diafan->addnew_init('Добавить товар', 'fa-cart-plus');
+		$this->diafan->addnew_init('Добавить ТЦ', 'fa-cart-plus');
 	}
 
 	/**
