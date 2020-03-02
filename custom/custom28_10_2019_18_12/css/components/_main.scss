@@ -564,3 +564,14 @@ main.right-side {
     }
 
 }
+
+.shop-item-right svg {
+    width: 16px;
+    height: 16px;
+    margin: 0 5px;
+    color: #4673ff;
+}
+
+.shop-item-right svg:hover {
+    color: #444;
+}

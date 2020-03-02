@@ -116,6 +116,8 @@
 	img {
 		max-width: 100%;
 		height: auto;
+		margin: 10px;
+		border-radius: 5px;
 	}
 
 	a:not(.button) {
@@ -125,6 +127,13 @@
 		&:hover {
 			text-decoration: none;
 		}
+	}
+
+	a[data-fancybox="editor"] {
+		display: block;
+		margin: auto;
+		display: block;
+		text-align: center;
 	}
 
 	ul {

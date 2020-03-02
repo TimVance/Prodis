@@ -43,7 +43,7 @@ if(! empty($result["img"]))
 				echo '<a href="'.BASE_PATH_HREF.$img["link"].'">';
 				break;
 		}
-		echo '<img src="'.$img["src"].'" width="'.$img["width"].'" height="'.$img["height"].'" alt="'.$img["alt"].'" title="'.$img["title"].'">'
+		echo '<img src="'.$img["vs"]["medium"].'" width="'.$img["width"].'" height="'.$img["height"].'" alt="'.$img["alt"].'" title="'.$img["title"].'">'
 		.'</a>';
 	}
 	echo '</div>';
