@@ -424,19 +424,19 @@ class Shop_admin extends Frame_admin
 			$statall = 0; $statdeact = 0; $statnon = 0; $statnoprice = 0; $statnoimage = 0;
 	
 			$statall = DB::query_result("SELECT COUNT(*) FROM {shop} WHERE ".$catstat." trash='0'", $this->diafan->_route->cat);
-			echo 'Всего товаров: <b>'.$statall.'</b>';
+			echo 'Всего заявок: <b>'.$statall.'</b>';
 	
 			$statdeact = DB::query_result("SELECT COUNT(*) FROM {shop} WHERE ".$catstat." [act]='0' AND trash='0'", $this->diafan->_route->cat);
 			echo ($statdeact > 0 ? ', неактивных: <b>'.$statdeact.'</b>' : '');
 	
 			$statnon = DB::query_result("SELECT COUNT(*) FROM {shop} WHERE ".$catstat." no_buy='1' AND trash='0'", $this->diafan->_route->cat);
-			echo ($statnon > 0 ? ', нет в наличии: <b>'.$statnon.'</b>' : '');
+			//echo ($statnon > 0 ? ', нет в наличии: <b>'.$statnon.'</b>' : '');
 	
 			$statnoprice = DB::query_result("SELECT count(DISTINCT g.id) FROM {shop} as g WHERE ".$catstat." 1=1 AND (SELECT COUNT(*) FROM {shop_price} AS i WHERE i.good_id=g.id)=0 AND g.trash='0'", $this->diafan->_route->cat);
-			echo ($statnoprice > 0 ? ', без цены: <b>'.$statnoprice.'</b>' : '');
+			//echo ($statnoprice > 0 ? ', без цены: <b>'.$statnoprice.'</b>' : '');
 	
 			$statnoimage = DB::query_result("SELECT count(DISTINCT g.id) FROM {shop} as g WHERE ".$catstat." 1=1 AND (SELECT COUNT(*) FROM {images} AS i WHERE i.element_id=g.id AND i.element_type='element' AND i.module_name='shop' AND i.param_id=0)=0 AND g.trash='0'", $this->diafan->_route->cat);
-			echo ($statnoimage > 0 ? ', без картинки: <b>'.$statnoimage.'</b>' : '');
+			//echo ($statnoimage > 0 ? ', без картинки: <b>'.$statnoimage.'</b>' : '');
 	
 			echo '</span>';
 		}

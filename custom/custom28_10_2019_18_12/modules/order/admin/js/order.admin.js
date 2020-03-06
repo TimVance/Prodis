@@ -156,4 +156,5 @@ $(document).ready(function() {
 	$("#order_goods_list").hide();
 	$("#delivery_id").hide();
 	$("#delivery_info").hide();
+	$('.orders_bottom').hide();
 });

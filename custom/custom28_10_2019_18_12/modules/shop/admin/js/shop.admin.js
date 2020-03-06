@@ -143,4 +143,10 @@ $('input[name=file_type]').change(function () {
 
 $(document).ready(function () {
 	$('#price').hide();
+	$('.settmd-link').hide();
+	$(".jq-selectbox option[value='macros_group_cat_del']").hide();
+	$(".jq-selectbox option[value='macros_group_site_id']").hide();
+	$(".jq-selectbox option[value='macros_group_cat_id']").hide();
+	$(".jq-selectbox option[value='macros_shop_group_clone']").hide();
+	$(".jq-selectbox option[value='macros_group_cat_multi']").hide();
 });
