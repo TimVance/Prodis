@@ -51,7 +51,21 @@ class DomPDF extends AbstractRenderer implements WriterInterface
         //  Create PDF
         $pdf = new DompdfLib();
         $pdf->setPaper(strtolower($paperSize), $orientation);
-        $pdf->loadHtml(str_replace(PHP_EOL, '', $this->getContent()));
+        $css = "
+                <style>
+                body * {  
+                    font-family: DejaVu Serif, serif !important;
+                    font-size: 14px;
+                    font-weight: normal;
+                }
+                td {
+                border: 1px solid #ccc !important; 
+                }
+                </style>
+        ";
+        echo $this->getContent().$css;
+        exit();
+        $pdf->loadHtml(str_replace(PHP_EOL, '', $this->getContent()).$css);
         $pdf->render();
 
         //  Write to file

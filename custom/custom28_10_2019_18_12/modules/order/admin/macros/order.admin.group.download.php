@@ -83,8 +83,12 @@ class Order_admin_group_download extends Diafan
             }
             $doc->cloneRowAndSetValues('staff_number', $values);
 
-            $doc->saveAs($_SERVER["DOCUMENT_ROOT"] . '/test3.docx');
-            $this->downloadFile($_SERVER["DOCUMENT_ROOT"] . '/test3.docx');
+            $dir = $_SERVER["DOCUMENT_ROOT"].'/tmp/orders';
+            if (!file_exists($dir))
+                mkdir($dir, 0777, true);
+
+            $doc->saveAs($dir . '/doc.docx');
+            $this->downloadFile($dir . '/doc.docx');
         }
         else {
             //город тц трекер
@@ -140,10 +144,12 @@ class Order_admin_group_download extends Diafan
                 $values = [];
                 $staff_fio = [];
                 if (count($names) > 0) {
+                    $n = 0;
                     for ($i = 0; $i < count($names); $i++) {
                         if (!in_array($names[$i], $staff_fio)) {
                             $staff_fio[] = $names[$i];
-                            $values[] = ['staff_number' => $i + 1, 'staff_fio' => $names[$i], 'staff_passport' => $passports[$i]];
+                            $values[] = ['staff_number' => $n, 'staff_fio' => $names[$i], 'staff_passport' => $passports[$i]];
+                            $n++;
                         }
                     }
                 }
@@ -161,9 +167,12 @@ class Order_admin_group_download extends Diafan
                 }
                 $doc->setValues($arValues);
 
+                $dir = $_SERVER["DOCUMENT_ROOT"].'/tmp/orders';
+                if (!file_exists($dir))
+                    mkdir($dir, 0777, true);
 
-                $doc->saveAs($_SERVER["DOCUMENT_ROOT"] . '/test3.docx');
-                $this->downloadFile($_SERVER["DOCUMENT_ROOT"] . '/test3.docx');
+                $doc->saveAs($dir . '/doc.docx');
+                $this->downloadFile($dir . '/doc.docx');
             }
         }
     }
