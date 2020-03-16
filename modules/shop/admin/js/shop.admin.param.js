@@ -8,7 +8,7 @@
  * @copyright  Copyright (c) 2003-2018 OOO «Диафан» (http://www.diafan.ru/)
  */
 
-$(document).ready(function() { param_select_site_id(); });
+$(document).ready(function() { param_select_site_id(); $(".settmd-link").hide(); });
 $('select[name=site_id]').change(param_select_site_id);
 
 $('#attachments_access_admin').remove();

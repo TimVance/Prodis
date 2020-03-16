@@ -149,4 +149,8 @@ $(document).ready(function () {
 	$(".jq-selectbox option[value='macros_group_cat_id']").hide();
 	$(".jq-selectbox option[value='macros_shop_group_clone']").hide();
 	$(".jq-selectbox option[value='macros_group_cat_multi']").hide();
+	$("#cat_id > input, #cat_id label").hide();
+	$("#discounts").hide().prev().hide();
+	$(".unit.images h2").hide();
+	$("#hr4").hide().next().hide().next().hide().next().hide();
 });

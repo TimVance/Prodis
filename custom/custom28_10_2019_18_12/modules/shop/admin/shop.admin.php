@@ -424,7 +424,7 @@ class Shop_admin extends Frame_admin
 			$statall = 0; $statdeact = 0; $statnon = 0; $statnoprice = 0; $statnoimage = 0;
 	
 			$statall = DB::query_result("SELECT COUNT(*) FROM {shop} WHERE ".$catstat." trash='0'", $this->diafan->_route->cat);
-			echo 'Всего заявок: <b>'.$statall.'</b>';
+			echo 'Всего: <b>'.$statall.'</b>';
 	
 			$statdeact = DB::query_result("SELECT COUNT(*) FROM {shop} WHERE ".$catstat." [act]='0' AND trash='0'", $this->diafan->_route->cat);
 			echo ($statdeact > 0 ? ', неактивных: <b>'.$statdeact.'</b>' : '');

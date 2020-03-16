@@ -240,6 +240,7 @@ class Frame_admin extends Diafan
 						return;
 
 					case 'show_rel_elements':
+                    case 'show_rel_goods':
 						$this->_theme = new Theme_admin($this->diafan);
 
 					case 'rel_elements':
@@ -247,6 +248,12 @@ class Frame_admin extends Diafan
 						Custom::inc("adm/includes/rel_elements.php");
 						$this->action_object = new Rel_elements_admin($this->diafan);
 						$this->ajax();
+
+                    case 'rel_goods':
+                    case 'delete_rel_good':
+                        Custom::inc("adm/includes/rel_goods.php");
+                        $this->action_object = new Rel_goods_admin($this->diafan);
+                        $this->ajax();
 
 					case 'auth':
 						break;

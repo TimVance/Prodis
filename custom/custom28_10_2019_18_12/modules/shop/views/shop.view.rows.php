@@ -21,7 +21,10 @@ if (! defined('DIAFAN'))
 	include $path.'/includes/404.php';
 }
 
-if(empty($result['rows'])) return false;
+if(empty($result['rows'])) {
+    echo 'Торговых центров не обнаружено';
+    return false;
+}
 
 foreach ($result['rows'] as $row)
 {		

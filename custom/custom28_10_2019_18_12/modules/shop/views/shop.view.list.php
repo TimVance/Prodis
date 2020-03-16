@@ -93,6 +93,9 @@ if(! empty($result["rows"]))
 	echo $this->get($result["view_rows"], 'shop', $result);
 	echo '</div>';
 }
+else {
+    echo 'Торговых центров не обнаружено';
+}
 
 //постраничная навигация
 if(! empty($result["paginator"]))

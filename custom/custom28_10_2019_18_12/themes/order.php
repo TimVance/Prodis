@@ -29,18 +29,22 @@ if(! defined("DIAFAN"))
 
     <?php
 
+    $cat = 2;
+    if (!empty($_GET["city"])) $cat = intval($_GET["city"]);
     $address = DB::query_fetch_array("
                     SELECT r.rewrite FROM {rewrite} AS r
                     LEFT JOIN {shop} AS s
                     ON s.id=r.element_id
+                    RIGHT JOIN {users_rel} AS rel ON rel.rel_element_id=s.id
                     WHERE r.module_name='shop'
                     AND r.element_type='element'
                     AND r.trash='0'
-                    AND s.cat_id='2'
+                    AND s.cat_id='%d'
+                    AND rel.element_id='%d'
                     ORDER BY r.id
-                    ");
-
+                    ", $cat, $this->diafan->_users->id);
     if (!empty($address["rewrite"])) $this->diafan->redirect($address["rewrite"]);
+    else echo 'Доступных для Вас торговых центров не найдено!';
 
     ?>
 
