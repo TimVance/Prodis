@@ -149,7 +149,7 @@ class Rel_goods_admin extends Diafan
 				<form><div class="infofield">'.$this->diafan->_('Поиск').'</div> <input type="text" class="rel_module_search">';
 				if($this->diafan->configmodules("cat", $this->diafan->_admin->module))
 				{
-					$cats = DB::query_fetch_key_array("SELECT id, [name], parent_id FROM {".$this->diafan->table."_category} WHERE trash='0' ORDER BY sort ASC", "parent_id");
+					$cats = DB::query_fetch_key_array("SELECT id, [name], parent_id FROM {shop_category} WHERE trash='0' ORDER BY sort ASC", "parent_id");
 					$vals = array();
 					if(! empty($_POST["cat_id"]))
 					{

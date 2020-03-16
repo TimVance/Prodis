@@ -918,6 +918,8 @@ class Save_functions_admin extends Diafan
 	 */
 	public function save_variable_rel_elements(){}
 
+    public function save_variable_rel_goods(){}
+
 	/**
 	 * Сохранение поля "Дополнительные параметры"
 	 *
