@@ -83,10 +83,6 @@ class Users_admin extends Frame_admin
 					'order' => "sort ASC",
 				),
 			),
-			'hr1' => array(
-				'type' => 'title',
-				'name' => 'Активность пользователя',
-			),
 			'activity' => array(
 				'type' => 'function',
 				'name' => 'Активность',
@@ -419,6 +415,7 @@ class Users_admin extends Frame_admin
 	 */
 	public function edit_variable_activity()
 	{
+	    /*
 		if(in_array('shop', $this->diafan->installed_modules))
 		{
 			$count = DB::query_result("SELECT COUNT(*) FROM {shop_order} WHERE user_id=%d AND trash='0'",$this->diafan->id);
@@ -429,7 +426,7 @@ class Users_admin extends Frame_admin
 				echo $this->diafan->_('Пользователь совершил').' <a href="'.BASE_PATH_HREF.'shop/order/?filter_user_id='.$this->diafan->id.'">'.$count .' '. $this->diafan->_('заказ(ов)').'</a> '.$this->diafan->_('на сумму ').' <b>'.$summ.'</b>';
 				echo '</div>';
 			}
-		}
+		}*/
 		if(in_array('comments', $this->diafan->installed_modules))
 		{
 			$count = DB::query_result("SELECT COUNT(*) FROM {comments} WHERE user_id=%d AND trash='0'",$this->diafan->id);
