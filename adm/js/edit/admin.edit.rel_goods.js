@@ -124,7 +124,7 @@ $(document).on('click', '.rel_module a', function() {
 			success: function(response){
 				console.log(response.data);
 				self.parents('.rel_module').removeClass('rel_module_selected');
-				$(".rel_element[rel_id="+self.parents(".rel_module").attr("element_id")+"]").remove();
+				$(".rel_good[rel_id="+self.parents(".rel_module").attr("element_id")+"]").remove();
 			}
 		});
 	}

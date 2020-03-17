@@ -4092,3 +4092,20 @@ justify-content: space-between;
 	margin: 5px 0;
 }
 /* |===============| addons end |===============| */
+.rel_module_good {
+	width: 100%;
+	margin: 0;
+	height: 40px;
+	line-height: 40px;
+	padding: 0 10px;
+}
+.rel_module_good > div {
+	height: 40px;
+}
+.rel_module_good > div > a {
+	display: block;
+}
+.rel_module_good .cat_name {
+	float: right;
+	opacity: .9;
+}

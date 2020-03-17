@@ -93,7 +93,7 @@ class Rel_goods_admin extends Diafan
 		$rows = DB::query_fetch_all("SELECT s.id, s.[".$name."], s.site_id FROM {shop} AS s"
 				." INNER JOIN {users_rel} AS r ON s.id=r.rel_element_id AND r.element_id=%d"
 				.(! empty($_POST["rel_two_sided"]) ? " OR s.id=r.element_id AND r.rel_element_id=%d" : "")
-				." WHERE s.trash='0' GROUP BY s.id",
+				." WHERE s.trash='0' GROUP BY s.id ORDER BY s.[name]",
 				$element_id, $element_id
 			);
 		foreach ($rows as $row)
@@ -201,19 +201,21 @@ class Rel_goods_admin extends Diafan
 			$count = DB::query_result("SELECT COUNT(DISTINCT s.id) FROM {shop} AS s".$inner
 				." WHERE s.trash='0' AND LOWER(s.[".$name."]) LIKE LOWER('%%%h%%')"
 				." AND s.id<>%d".$where, $_POST["search"], $_POST["element_id"]);
-			$rows = DB::query_range_fetch_all("SELECT s.id, s.[name], s.[act]".('shop' == 'shop' ? ", s.no_buy" : '')." FROM {shop} AS s"
+			$rows = DB::query_range_fetch_all("SELECT s.id, c.[name] AS cat_name, s.[name], s.[act]".('shop' == 'shop' ? ", s.no_buy" : '')." FROM {shop} AS s"
 				.$inner
+                ." RIGHT JOIN {shop_category} AS c ON c.id=s.cat_id"
 				." WHERE s.trash='0' AND LOWER(s.[".$name."]) LIKE LOWER('%%%h%%')"
-				." AND s.id<>%d".$where, $_POST["search"], $_POST["element_id"], $start, $nastr);
+				." AND s.id<>%d".$where." ORDER BY s.[name]", $_POST["search"], $_POST["element_id"], $start, $nastr);
 		}
 		else
 		{
 			$count = DB::query_result("SELECT COUNT(DISTINCT s.id) FROM {shop} AS s"
 				.$inner
 				." WHERE s.trash='0' AND s.id<>%d".$where, $_POST["element_id"]);
-			$rows = DB::query_range_fetch_all("SELECT s.id, s.[name], s.[act]".('shop' == 'shop' ? ", s.no_buy" : '')." FROM {shop} AS s"
+			$rows = DB::query_range_fetch_all("SELECT s.id, c.[name] AS cat_name, s.[name], s.[act]".('shop' == 'shop' ? ", s.no_buy" : '')." FROM {shop} AS s"
 				.$inner
-				." WHERE s.trash='0' AND s.id<>%d".$where, $_POST["element_id"], $start, $nastr);
+                ." RIGHT JOIN {shop_category} AS c ON c.id=s.cat_id"
+				." WHERE s.trash='0' AND s.id<>%d".$where." ORDER BY s.[name]", $_POST["element_id"], $start, $nastr);
 		}
 		$ids = array();
 		foreach ($rows as $row)
@@ -227,10 +229,10 @@ class Rel_goods_admin extends Diafan
 		foreach ($rows as $row)
 		{
 			$row_img = (! empty($row_imgs[$row["id"]]) ? $row_imgs[$row["id"]] : '');
-			$list .= '<div class="rel_module'.(in_array($row["id"], $rel_elements) ? ' rel_module_selected' : '').'" element_id="'.$row["id"].'">
+			$list .= '<div class="rel_module_good rel_module'.(in_array($row["id"], $rel_elements) ? ' rel_module_selected' : '').'" element_id="'.$row["id"].'">
 			<div>
 			'.($row_img ? '<a href="javascript:void(0)"><img src="'.BASE_PATH.USERFILES.'/small/'.($row_img["folder_num"] ? $row_img["folder_num"].'/' : '').$row_img["name"].'"></a>' : '').'
-			<a href="javascript:void(0)"'.(! $row["act"] || ! empty($row["no_buy"]) ? ' class="noact"' : '').'>'.$this->diafan->short_text($row[$name], 50).'</a>
+			<a href="javascript:void(0)"'.(! $row["act"] || ! empty($row["no_buy"]) ? ' class="noact"' : '').'>'.$this->diafan->short_text($row[$name], 50).'<div class="cat_name">'.$row["cat_name"].'</div></a>
 			</div>
 			</div>';
 		}

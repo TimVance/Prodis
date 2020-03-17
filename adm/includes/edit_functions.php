@@ -1424,7 +1424,7 @@ class Edit_functions_admin extends Diafan
             $rows = DB::query_fetch_all("SELECT s.id, s.[".$name."], s.site_id FROM {".$table."} AS s"
                 ." INNER JOIN {".$rel."_rel} AS r ON s.id=r.rel_element_id AND r.element_id=%d"
                 .($rel_two_sided ? " OR s.id=r.element_id AND r.rel_element_id=".$this->diafan->id : "")
-                ." WHERE s.trash='0' GROUP BY s.id",
+                ." WHERE s.trash='0' GROUP BY s.id ORDER BY s.[name]",
                 $this->diafan->id
             );
             foreach ($rows as $row)
