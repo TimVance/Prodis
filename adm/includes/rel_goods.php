@@ -90,8 +90,9 @@ class Rel_goods_admin extends Diafan
 		$name = 'name';
 
 		$this->result["data"] = '';
-		$rows = DB::query_fetch_all("SELECT s.id, s.[".$name."], s.site_id FROM {shop} AS s"
+		$rows = DB::query_fetch_all("SELECT s.id, c.[name] AS cat_name, s.[".$name."], s.site_id FROM {shop} AS s"
 				." INNER JOIN {users_rel} AS r ON s.id=r.rel_element_id AND r.element_id=%d"
+                ." RIGHT JOIN {shop_category} AS c ON c.id=s.cat_id"
 				.(! empty($_POST["rel_two_sided"]) ? " OR s.id=r.element_id AND r.rel_element_id=%d" : "")
 				." WHERE s.trash='0' GROUP BY s.id ORDER BY s.[name]",
 				$element_id, $element_id
@@ -105,7 +106,7 @@ class Rel_goods_admin extends Diafan
 			}
 			$this->result["data"] .= '
 			<div class="rel_good" element_id="'.$element_id.'" rel_id="'.$row["id"].'">'
-				.(! empty($row_img) ? '<img src="'.BASE_PATH.USERFILES.'/small/'.($row_img["folder_num"] ? $row_img["folder_num"].'/' : '').$row_img["name"].'">' : '').$this->diafan->short_text($row[$name], 50)
+				.(! empty($row_img) ? '<img src="'.BASE_PATH.USERFILES.'/small/'.($row_img["folder_num"] ? $row_img["folder_num"].'/' : '').$row_img["name"].'">' : '').$this->diafan->short_text($row[$name], 50).'('.$row["cat_name"].')'
 				.'
 				<div class="rel_good_actions">';
 			if($this->diafan->configmodules("page_show", $this->diafan->_admin->module, $this->diafan->_route->site))
