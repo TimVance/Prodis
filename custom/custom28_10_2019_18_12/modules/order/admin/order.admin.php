@@ -1301,7 +1301,7 @@ class Order_admin extends Frame_admin
 			$orders = DB::query_result("SELECT COUNT(*) FROM {shop_order} WHERE user_id=%d AND trash='0'",$this->diafan->values("user_id"));
 				if ($orders>1)
 				{
-					$user = $this->diafan->_('Всего заявок данного закасчика:').' <a href="'.BASE_PATH_HREF.'order/?filter_user_id='.$this->diafan->values("user_id").'">'.$orders .' '.'</a>';
+					$user = $this->diafan->_('Всего заявок данного заказчика:').' <a href="'.BASE_PATH_HREF.'order/?filter_user_id='.$this->diafan->values("user_id").'">'.$orders .' '.'</a>';
 				}
 				else
 				{
