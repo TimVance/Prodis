@@ -1481,6 +1481,77 @@ class Edit_functions_admin extends Diafan
 		</div>';
 	}
 
+    /**
+     * Редактирование поля "Регламент"
+     * @return void
+     */
+    public function edit_variable_replication()
+    {
+        echo '
+        
+            <div class="tabs-period">
+                повторяемость
+                <span data-class="days" class="days active">День</span>
+                <span data-class="weeks" class="weeks">Неделя</span>
+                <span data-class="months" class="months">Месяц</span>
+            </div>
+            <div class="tabs-wrapper">
+                <div class="days active">
+                    каждый <input type="text" class="day" value="1"> день с интервалом <input type="text" class="month" value="0"> мес
+                    <div class="time-wrapper">
+                        Время выполнения: <input type="time" class="timepickerr" value="00:00">
+                    </div>
+                </div>
+                <div class="weeks">
+                    каждую <input type="text" class="week" value="1"> неделю
+                    <div class="weeks-day">
+                        <span><input value="1" data-name="пн" type="checkbox">пн</span>
+                        <span><input value="2" data-name="вт" type="checkbox">вт</span>
+                        <span><input value="3" data-name="ср" type="checkbox">ср</span>
+                        <span><input value="4" data-name="чт" type="checkbox">чт</span>
+                        <span><input value="5" data-name="пт" type="checkbox">пт</span>
+                        <span><input value="6" data-name="сб" type="checkbox">сб</span>
+                        <span><input value="7" data-name="вс" type="checkbox">вс</span>
+                    </div>
+                    <div class="time-wrapper">
+                        Время выполнения: <input type="time" class="timepickerr" value="00:00">
+                    </div>
+                </div>
+                <div class="months">
+                    <div class="number-month active">
+                        <label><input data-radio="1" type="radio" checked>каждое</label>
+                        <input type="number" value="1" class="number"> число каждого 
+                        <input type="number" value="1" class="month"> месяца
+                    </div>
+                    <div class="number-week">
+                        <label><input data-radio="2" type="radio">каждый</label>
+                        <select class="day-week">
+                            <option value="1">Первый</option>
+                            <option value="2">Второй</option>
+                            <option value="3">Третий</option>
+                            <option value="4">Четвертый</option>
+                            <option value="5">Последний</option>
+                        </select>
+                        <select class="name-week">
+                            <option value="1">Понедельник</option>
+                            <option value="2">Вторник</option>
+                            <option value="3">Среда</option>
+                            <option value="4">Четверг</option>
+                            <option value="5">Пятница</option>
+                            <option value="6">Суббота</option>
+                            <option value="7">Воскресенье</option>
+                        </select>
+                        каждого <input type="number" value="1" class="month"> месяца
+                    </div>
+                    <div class="time-wrapper">
+                        Время выполнения: <input type="time" class="timepickerr" value="00:00">
+                    </div>
+                </div>
+            </div>
+            <div class="period-text"></div>
+        ';
+    }
+
 	/**
 	 * Редактирование поля "Описание, тег Description"
 	 * @return void

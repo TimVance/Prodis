@@ -4109,3 +4109,69 @@ justify-content: space-between;
 	float: right;
 	opacity: .9;
 }
+.tabs-period {
+	
+}
+.tabs-period > span {
+	cursor: pointer;
+	display: inline-block;
+	padding: 5px 10px;
+}
+.tabs-period > span.active {
+	background-color: #ccc;
+}
+.tabs-period > span:hover {
+	background-color: #ccc;
+}
+.tabs-wrapper {
+	margin-top: 20px;
+}
+.tabs-wrapper input {
+	width: 80px !important;
+}
+.tabs-wrapper > div {
+	display: none;
+}
+.tabs-wrapper > div.active {
+	display: block;
+}
+.period-text {
+	background: #d5f9af;
+	display: inline-block;
+	padding: 5px 10px;
+	margin-top: 10px;
+}
+.time-wrapper {
+	margin-top: 20px;
+}
+.time-wrapper input {
+	width: 100px !important;
+}
+.weeks-day input {
+	display: inline-block !important;
+	width: auto !important;
+	margin-left: 10px;
+	margin-right: 3px;
+	margin-top: 10px;
+}
+.tabs-wrapper > .months input[type="radio"] {
+	width: auto !important;
+	display: inline-block;
+	margin-right: 10px;
+}
+.number-week {
+	margin-top: 20px;
+}
+.tabs-wrapper > .months > .number-month,
+.tabs-wrapper > .months > .number-week {
+	opacity: .4;
+}
+.tabs-wrapper > .months > div.active {
+	opacity: 1;
+}
+.tabs-wrapper > .months label {
+	cursor: pointer;
+}
+#reglament {
+	display: none;
+}
