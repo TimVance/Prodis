@@ -35,6 +35,12 @@ class Reglament_admin extends Frame_admin
         'name' => array(
             'name' => 'Название'
         ),
+        'next_step' => array(
+            'name' => 'Следующая активность',
+            'type' => 'datetime',
+            'sql' => true,
+            'no_important' => true,
+        ),
         'last_action' => array(
             'name' => 'Последняя активность',
             'type' => 'datetime',
@@ -80,6 +86,19 @@ class Reglament_admin extends Frame_admin
             ),
         ),
     );
+
+
+    /**
+     * @var array поля для фильтра
+     */
+    public $variables_filter = array (
+        'name' => array(
+            'type' => 'text',
+            'name' => 'Искать по названию',
+        ),
+    );
+
+
 	/**
 	 * Выводит ссылку на добавление
 	 * @return void

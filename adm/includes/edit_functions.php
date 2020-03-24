@@ -1497,13 +1497,13 @@ class Edit_functions_admin extends Diafan
             </div>
             <div class="tabs-wrapper">
                 <div class="days active">
-                    каждый <input type="text" class="day" value="1"> день с интервалом <input type="text" class="month" value="0"> мес
+                    каждый <input type="number" class="day" value="1"> день с интервалом <input type="number" class="month" value="0"> мес
                     <div class="time-wrapper">
                         Время выполнения: <input type="time" class="timepickerr" value="00:00">
                     </div>
                 </div>
                 <div class="weeks">
-                    каждую <input type="text" class="week" value="1"> неделю
+                    каждую <input type="number" class="week" value="1"> неделю
                     <div class="weeks-day">
                         <span><input value="1" data-name="пн" type="checkbox">пн</span>
                         <span><input value="2" data-name="вт" type="checkbox">вт</span>

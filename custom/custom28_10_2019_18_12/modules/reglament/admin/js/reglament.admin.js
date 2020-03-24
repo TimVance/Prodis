@@ -7,6 +7,28 @@ $(function() {
         $(".tabs-wrapper").find("." + $(this).attr("data-class")).addClass("active");
     });
 
+    // Вписываем заказы
+    $.extend({
+        getUrlVars: function(){
+            var vars = [], hash;
+            var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+
+            for(var i = 0; i < hashes.length; i++)
+            {
+                hash = hashes[i].split('=');
+                vars.push(hash[0]);
+                vars[hash[0]] = hash[1];
+            }
+            return vars;
+        },
+        getUrlVar: function(name){
+            return $.getUrlVars()[name];
+        }
+    });
+    let url = $.getUrlVar('orders');
+    if(url != '') $("input[name='ids']").val(url);
+
+
     // Дни
     function days() {
         let day = 0;
@@ -33,7 +55,7 @@ $(function() {
     }
     $(".tabs-wrapper .days input").change(days);
     $(".tabs-period .days").click(days);
-    days();
+    //days();
 
     // Недели
     function weeks() {
@@ -131,7 +153,7 @@ $(function() {
             if(month > 1) text += ' каждого ' + month + ' месяца';
             else text += ' каждого месяца';
 
-            $("input[name='reglament']").val('t3|r' + radio + '|' + day + '|' + name + "|" + '|' + month + '|' + time);
+            $("input[name='reglament']").val('t3|r' + radio + '|' + day + '|' + name + "|" + month + '|' + time);
         }
 
         text += ' в ' + time;
@@ -142,4 +164,48 @@ $(function() {
     $(".tabs-wrapper .months input").change(months);
     $(".tabs-wrapper .months select").change(months);
 
+    // Устанавливаем табы
+    function setTabs() {
+        let reglament = $("input[name='reglament']").val();
+        let arrReglament = reglament.split("|");
+        console.log(reglament);
+        if(arrReglament[0] == "t1") {
+            $(".tabs-wrapper > .days > .day").val(arrReglament[1]);
+            $(".tabs-wrapper > .days > .month").val(arrReglament[2]);
+            $(".tabs-wrapper > .days .timepickerr").val(arrReglament[3]);
+
+            $(".tabs-wrapper .timepickerr").change();
+            $(".tabs-period > .days").click();
+        }
+        if(arrReglament[0] == "t2") {
+            $(".tabs-wrapper > .weeks .week").val(arrReglament[1]);
+            let weekDay = arrReglament[2].split(",");
+            for(let i = 0; i < weekDay.length; i++) {
+                $(".weeks-day input[value='" + weekDay[i] + "']").prop("checked", true);
+                console.log(weekDay[i]);
+            }
+            $(".tabs-wrapper > .weeks .timepickerr").val(arrReglament[3]);
+
+            $(".tabs-wrapper .timepickerr").change();
+            $(".tabs-period > .weeks").click();
+        }
+        if(arrReglament[0] == "t3") {
+            if (arrReglament[1] == "r1") {
+                $(".tabs-wrapper .number-month .number").val(arrReglament[2]);
+                $(".tabs-wrapper .number-month .month").val(arrReglament[3]);
+                $(".tabs-wrapper > .months .timepickerr").val(arrReglament[4]);
+            }
+            if (arrReglament[1] == "r2") {
+                $(".tabs-wrapper .number-week label").click();
+                $(".tabs-wrapper .number-week .day-week option[value='"+arrReglament[2]+"']").prop("selected", true);
+                $(".tabs-wrapper .number-week .name-week option[value='"+arrReglament[3]+"']").prop("selected", true);
+                $(".tabs-wrapper .number-week .month").val(arrReglament[4]);
+                $(".tabs-wrapper > .months .timepickerr").val(arrReglament[5]);
+            }
+
+            $(".tabs-wrapper .timepickerr").change();
+            $(".tabs-period > .months").click();
+        }
+    }
+    setTabs();
 });

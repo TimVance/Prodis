@@ -75,6 +75,11 @@ class Reglament_install extends Install
                     "comment" => "дата создания",
                 ),
                 array(
+                    "name" => "next_step",
+                    "type" => "INT(10) UNSIGNED NOT NULL DEFAULT '0'",
+                    "comment" => "следующий шаг",
+                ),
+                array(
                     "name" => "last_action",
                     "type" => "INT(10) UNSIGNED NOT NULL DEFAULT '0'",
                     "comment" => "Последняя активность",
