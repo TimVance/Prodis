@@ -28,36 +28,10 @@ function calculateNextStep() {
         $next = 0;
         if($reglament[0] == 't1') {
             // Таб дни
-
-            $t1_day = $reglament[1];
-            $t1_month = intval($reglament[2]);
             $t1_time = $reglament[3];
 
-            // Каждый день раз в несколько месяцев
-            $last_date = $row["created"];
-            $last_action_month = date("n", $last_date);
-            $current_month = date("n", time());
-            if($last_action_month == $current_month) {
-                $today_date = date("Y-m-d", time());
-                $today_time = strtotime($today_date.' '.$t1_time);
-
-                if(time() > $today_time) $next = strtotime("+".$t1_day." days", $today_time);
-                else $next = $today_time;
-
-                if(date("n", $next) != $current_month) {
-                    $d = new DateTime(date("Y-m-d H:i:s", $today_time));
-                    $d->modify( 'first day of +'.($t1_month + 1).' month' );
-                    $next = strtotime($d->format("Y-m-d H:i:s"));
-                }
-            }
-            else {
-                $today_date = date("Y-m-d", time());
-                $today_time = strtotime($today_date.' '.$t1_time);
-
-                $d = new DateTime(date("Y-m-d H:i:s", $today_time));
-                $d->modify( 'first day of +'.($t1_month + 1).' month' );
-                $next = strtotime($d->format("Y-m-d H:i:s"));
-            }
+            $today_date = date("Y-m-d", time());
+            $next = strtotime($today_date.' '.$t1_time);
         }
         elseif ($reglament[0] == 't2') {
             // Таб недели
@@ -90,8 +64,6 @@ function calculateNextStep() {
                 $last_monday = strtotime("next Monday");
                 $next = strtotime(date("Y-m-d", $last_monday).' '.$t2_time);
             }
-            echo '<br>';
-
         }
         else {
             // Таб месяцы
